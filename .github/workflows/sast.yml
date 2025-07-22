@@ -1,49 +1,54 @@
-name: OpenGrep SAST Scan
+name: Unified OpenGrep SAST and Secret Scan
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+    push:
+        branches:
+            - main
+    pull_request:
+        branches:
+            - main
 
 jobs:
-  sast-scan:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4 # Use a recent version of checkout action
+    unified-sast-secret-scan:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read # Required to checkout code
+            security-events: write # Required to upload SARIF results to Code Scanning
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4 # Use a recent version of checkout action
 
-      - name: Setup OpenGrep
-        # This example uses a common method to download and make it executable.
-        run: |
-          curl -fsSL https://github.com/opengrep/opengrep/releases/latest/download/opengrep_manylinux_x86 -o opengrep
-          chmod +x opengrep
-          ./opengrep --version # Verify installation
+            - name: Setup OpenGrep
+              # This step downloads the latest OpenGrep binary and makes it executable.
+              run: |
+                  curl -fsSL https://github.com/opengrep/opengrep/releases/latest/download/opengrep_manylinux_x86 -o opengrep
+                  chmod +x opengrep
+                  ./opengrep --version # Verify installation
 
-      - name: Run OpenGrep SAST Scan
-        # This command runs OpenGrep, outputs to SARIF, and stores it in a file.
-        # The '--config auto' flag tells OpenGrep to automatically detect and apply rules.
-        run: |
-          ./opengrep ci --sarif --sarif-output opengrep_report.sarif --config auto
-        # The '|| true' allows the workflow to continue even if OpenGrep finds issues (which returns a non-zero exit code)
-        continue-on-error: true # Consider changing to 'false' if you want the workflow to fail on findings.
+            - name: Run Unified OpenGrep SAST and Secret Scan
+              # This command runs OpenGrep, outputs to SARIF, and stores it in a file.
+              # The '--config auto' flag tells OpenGrep to automatically detect and apply rules,
+              # which should include both general SAST and secret detection rules.
+              run: |
+                  ./opengrep ci --sarif --sarif-output opengrep_report.sarif --config auto
+              # 'continue-on-error: true' allows the workflow to proceed even if OpenGrep finds issues (which returns a non-zero exit code).
+              # Consider changing to 'false' if you want the workflow to fail on any findings.
+              continue-on-error: true
 
-      - name: Upload SARIF to GitHub Code Scanning
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: opengrep_report.sarif
+            - name: Upload Unified SARIF Report to GitHub Code Scanning
+              uses: github/codeql-action/upload-sarif@v3
+              with:
+                  sarif_file: opengrep_report.sarif
 
-      - name: Upload SAST Results as Artifact
-        uses: actions/upload-artifact@v4 # Use a recent version of upload-artifact action
-        with:
-          name: opengrep-sast-results
-          path: opengrep_report.sarif
-          retention-days: 5 # Optional: how long to keep the artifact
+            - name: Upload Unified Scan Results as Workflow Artifact
+              uses: actions/upload-artifact@v4 # Use a recent version of upload-artifact action
+              with:
+                  name: opengrep-unified-sast-secret-results
+                  path: opengrep_report.sarif
+                  retention-days: 5 # Optional: how long to keep the artifact
 
-      - name: Display SAST Results (Optional - for quick viewing in logs)
-        run: |
-          echo "--- OpenGrep SARIF Report ---"
-          cat opengrep_report.sarif
-          echo "-----------------------------"
+            - name: Display Unified Scan Results (Optional - for quick viewing in logs)
+              run: |
+                  echo "--- Unified OpenGrep SARIF Report ---"
+                  cat opengrep_report.sarif
+                  echo "-------------------------------------"
