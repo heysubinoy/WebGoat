@@ -3,10 +3,10 @@ name: AccuKnox Opengrep SAST
 on:
     push:
         branches:
-            - main
+            - opengrep
     pull_request:
         branches:
-            - main
+            - opengrep
 
 jobs:
     accuknox-cicd:
@@ -22,5 +22,4 @@ jobs:
                   accuknox_tenant: "${{ secrets.ACCUKNOX_TENANT }}"
                   accuknox_token: "${{ secrets.ACCUKNOX_TOKEN }}"
                   accuknox_label: "${{ secrets.ACCUKNOX_LABEL }}"
-                  input_soft_fail: true
                   upload_artifact: true
