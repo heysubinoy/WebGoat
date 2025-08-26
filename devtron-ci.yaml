@@ -1,0 +1,5 @@
+version: v1
+pipeline:
+  - name: clone-only
+    type: CI
+    tasks: []
