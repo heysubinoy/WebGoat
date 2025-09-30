@@ -15,9 +15,9 @@ steps:
     
 - task: subinoyworks-accuknox-iac@0.1.21
   inputs:
-    accuknoxEndpoint: '<ACCUKNOX_ENDPOINT>'
-    accuknoxTenantId: '<ACCUKNOX_TENANT_ID>'
-    accuknoxToken: '<ACCUKNOX_TOKEN>'
-    accuknoxLabel: '<ACCUKNOX_LABEL>'
+    accuknoxEndpoint: '$(accuknox-enpoint)'
+    accuknoxTenantId: '1111'
+    accuknoxToken: '$(accuknox-token)'
+    accuknoxLabel: '$(accuknox-label)'
     inputQuiet: true
     inputCompact: true
