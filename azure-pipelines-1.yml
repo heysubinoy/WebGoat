@@ -13,11 +13,9 @@ steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
     
-- task: subinoyworks-accuknox-iac@0.1.21
+- task: AccuKnox-SAST@2
   inputs:
     accuknoxEndpoint: '$(accuknox-enpoint)'
-    accuknoxTenantId: '1111'
     accuknoxToken: '$(accuknox-token)'
     accuknoxLabel: '$(accuknox-label)'
-    inputQuiet: true
-    inputCompact: true
+    softFail: true
