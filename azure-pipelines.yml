@@ -13,7 +13,7 @@ steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
     
-- task: safeer-accuknox-iac@0.1.11
+- task: subinoyworks-accuknox-iac@0.1.21
   inputs:
     accuknoxEndpoint: 'cspm.demo.accuknox.com'
     accuknoxTenantId:  '$(tentant-id)'
