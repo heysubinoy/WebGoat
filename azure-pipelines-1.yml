@@ -13,9 +13,9 @@ steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
     
-- task: AccuKnox-SAST@2
+- task: accuknox-secret-scan@1
   inputs:
     accuknoxEndpoint: '$(accuknox-enpoint)'
     accuknoxToken: '$(accuknox-token)'
     accuknoxLabel: '$(accuknox-label)'
-    softFail: true
+    inputSoftFail: false
