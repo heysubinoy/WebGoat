@@ -1,0 +1,39 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
+
+- task: AccuKnox-SAST@2
+  inputs:
+    accuknoxEndpoint: $(accuknoxEndpoint)
+    accuknoxToken: $(accuknoxToken)
+    accuknoxLabel: $(accuknoxLabel)
+    softFail: true
+
+- task: AccuKnox-DAST@2
+  inputs:
+    targetURL: 'http://testphp.vulnweb.com/'
+    scanType: 'baseline'
+    accuknoxEndpoint: $(accuknoxEndpoint)
+    accuknoxToken: $(accuknoxToken)
+    accuknoxLabel: $(accuknoxLabel)
+
+- task: AccuKnox-Container-Scan@2
+  inputs:
+    imageName: 'bkimminich/juice-shop'
+    tag: 'latest'
+    inputSoftFail: true
+    accuknoxEndpoint: $(accuknoxEndpoint)
+    accuknoxToken: $(accuknoxToken)
+    accuknoxLabel: $(accuknoxLabel)
+
