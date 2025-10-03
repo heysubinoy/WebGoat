@@ -17,6 +17,17 @@ steps:
     accuknoxLabel: $(accuknoxLabel)
     softFail: true
 
+- task: accuknox-sq-sast@2
+  inputs:
+    sonarQubeUrl: '$(sq-url)'
+    sonarQubeToken: '$(sq-token)'
+    sonarQubeProjectKey: '$(sq-pk)'
+    accuknoxEndpoint: $(accuknoxEndpoint)
+    accuknoxToken: $(accuknoxToken)
+    accuknoxLabel: $(accuknoxLabel)
+    skipSonarQubeScan: true
+    qualityGate: false
+
 - task: AccuKnox-DAST@2
   inputs:
     targetURL: 'http://testphp.vulnweb.com/'
