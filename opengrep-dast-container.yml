@@ -10,38 +10,50 @@ pool:
   name: Test
 
 steps:
-- task: AccuKnox-SAST@2
-  inputs:
-    accuknoxEndpoint: $(accuknoxEndpoint)
-    accuknoxToken: $(accuknoxToken)
-    accuknoxLabel: $(accuknoxLabel)
-    softFail: true
 
-- task: accuknox-sq-sast@2
+- task: accuknox-checkmarx-sast@1
   inputs:
-    sonarQubeUrl: '$(sq-url)'
-    sonarQubeToken: '$(sq-token)'
-    sonarQubeProjectKey: '$(sq-pk)'
-    accuknoxEndpoint: $(accuknoxEndpoint)
-    accuknoxToken: $(accuknoxToken)
-    accuknoxLabel: $(accuknoxLabel)
-    skipSonarQubeScan: true
-    qualityGate: false
-
-- task: AccuKnox-DAST@2
-  inputs:
-    targetURL: 'http://testphp.vulnweb.com/'
-    scanType: 'baseline'
+    checkmarxBaseUri: $(checkmarxBaseUri)
+    checkmarxBaseAuthUri: $(checkmarxBaseAuthUri)
+    checkmarxTenant: $(checkmarxTenant)
+    checkmarxApiKey: $(checkmarxApiKey)
+    checkmarxProjectName: $(checkmarxProjectName)
     accuknoxEndpoint: $(accuknoxEndpoint)
     accuknoxToken: $(accuknoxToken)
     accuknoxLabel: $(accuknoxLabel)
 
-- task: AccuKnox-Container-Scan@2
-  inputs:
-    imageName: 'bkimminich/juice-shop'
-    tag: 'latest'
-    inputSoftFail: true
-    accuknoxEndpoint: $(accuknoxEndpoint)
-    accuknoxToken: $(accuknoxToken)
-    accuknoxLabel: $(accuknoxLabel)
+# - task: AccuKnox-SAST@2
+#   inputs:
+#     accuknoxEndpoint: $(accuknoxEndpoint)
+#     accuknoxToken: $(accuknoxToken)
+#     accuknoxLabel: $(accuknoxLabel)
+#     softFail: true
+
+# - task: accuknox-sq-sast@2
+#   inputs:
+#     sonarQubeUrl: '$(sq-url)'
+#     sonarQubeToken: '$(sq-token)'
+#     sonarQubeProjectKey: '$(sq-pk)'
+#     accuknoxEndpoint: $(accuknoxEndpoint)
+#     accuknoxToken: $(accuknoxToken)
+#     accuknoxLabel: $(accuknoxLabel)
+#     skipSonarQubeScan: true
+#     qualityGate: false
+
+# - task: AccuKnox-DAST@2
+#   inputs:
+#     targetURL: 'http://testphp.vulnweb.com/'
+#     scanType: 'baseline'
+#     accuknoxEndpoint: $(accuknoxEndpoint)
+#     accuknoxToken: $(accuknoxToken)
+#     accuknoxLabel: $(accuknoxLabel)
+
+# - task: AccuKnox-Container-Scan@2
+#   inputs:
+#     imageName: 'bkimminich/juice-shop'
+#     tag: 'latest'
+#     inputSoftFail: true
+#     accuknoxEndpoint: $(accuknoxEndpoint)
+#     accuknoxToken: $(accuknoxToken)
+#     accuknoxLabel: $(accuknoxLabel)
 
