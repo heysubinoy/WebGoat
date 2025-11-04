@@ -11,7 +11,7 @@ pool:
 
 steps:
 
-- task: accuknox-checkmarx-sast@1
+- task: accuknox-checkmarx-extension@1
   inputs:
     checkmarxBaseUri: $(checkmarxBaseUri)
     checkmarxBaseAuthUri: $(checkmarxBaseAuthUri)
@@ -22,38 +22,20 @@ steps:
     accuknoxToken: $(accuknoxToken)
     accuknoxLabel: $(accuknoxLabel)
 
-# - task: AccuKnox-SAST@2
-#   inputs:
-#     accuknoxEndpoint: $(accuknoxEndpoint)
-#     accuknoxToken: $(accuknoxToken)
-#     accuknoxLabel: $(accuknoxLabel)
-#     softFail: true
-
-# - task: accuknox-sq-sast@2
-#   inputs:
-#     sonarQubeUrl: '$(sq-url)'
-#     sonarQubeToken: '$(sq-token)'
-#     sonarQubeProjectKey: '$(sq-pk)'
-#     accuknoxEndpoint: $(accuknoxEndpoint)
-#     accuknoxToken: $(accuknoxToken)
-#     accuknoxLabel: $(accuknoxLabel)
-#     skipSonarQubeScan: true
-#     qualityGate: false
-
-# - task: AccuKnox-DAST@2
-#   inputs:
-#     targetURL: 'http://testphp.vulnweb.com/'
-#     scanType: 'baseline'
-#     accuknoxEndpoint: $(accuknoxEndpoint)
-#     accuknoxToken: $(accuknoxToken)
-#     accuknoxLabel: $(accuknoxLabel)
-
-# - task: AccuKnox-Container-Scan@2
-#   inputs:
-#     imageName: 'bkimminich/juice-shop'
-#     tag: 'latest'
-#     inputSoftFail: true
-#     accuknoxEndpoint: $(accuknoxEndpoint)
-#     accuknoxToken: $(accuknoxToken)
-#     accuknoxLabel: $(accuknoxLabel)
+- task: accuknox-checkmarx-extension@1
+  displayName: "Run Checkmarx DAST Scan"
+  inputs:
+    checkmarxBaseUri: $(checkmarxBaseUri)
+    checkmarxBaseAuthUri: $(checkmarxBaseAuthUri)
+    checkmarxTenant: $(checkmarxTenant)
+    checkmarxApiKey: $(checkmarxApiKey)
+    checkmarxProjectName: $(checkmarxProjectName)
+    checkmarxScanTypes: "dast"
+    dastScanUrl: "http://testphp.vulnweb.com"
+    dastEnvironmentId: "051cb3db-df12-4245-90fd-9ca1a441db2e"
+    dastFailOn: "high"
+    dastVerbose: true
+    accuknoxEndpoint: $(accuknoxEndpoint)
+    accuknoxToken: $(accuknoxToken)
+    accuknoxLabel: $(accuknoxLabel)
 
